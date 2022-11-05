@@ -1,0 +1,28 @@
+*{
+    margin : 0px;
+    padding : 0px;
+}
+
+#left-nav{
+    background-color: #ECF6FF;
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-weight: 600;
+}
+
+#endcontent{
+    margin: 8px;
+}
+
+#centercontent{
+    margin-top: 100px;
+}
+
+#individualtopics{
+    margin-bottom: 12px;
+    margin-top: 12px;
+}
+
