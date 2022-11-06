@@ -48,7 +48,7 @@
                     fetch('/signinusers',{
                       method:'POST',
                       body:JSON.stringify({id: uname, password: upass}),
-                      contentType: "application/json"}).then(response => {})
+                      contentType: "application/json"}).then(response => {console.log(response)})
                   }
                 </script>
                 <div style="font-size:x-small; font-weight: bold;" class="my-3">Or Don't have an account?</div>    

@@ -1,6 +1,7 @@
 # from crypt import methods
 from flask import *
 from flask_cors import CORS
+from dboperations import *;
 
 app = Flask(__name__,template_folder = 'templates')
 
@@ -15,12 +16,20 @@ def welcome():
 
 @app.route('/signinusers',methods=['POST'])
 def signinusers():
+    value = signinusersdb(json.loads(request.get_data())['id'],json.loads(request.get_data())['password'])
     print(json.loads(request.get_data()))
-    return json.loads(request.get_data())['name']
+    return value
 
 @app.route('/signin')
 def signin():
     return render_template("index.html")
+
+@app.route('/signupusers',methods=['POST'])
+def signupusers():
+    value = signupusersdb(json.loads(request.get_data())['name'],json.loads(request.get_data())['email'],json.loads(request.get_data())['password'])
+    print(json.loads(request.get_data()))
+    return value
+
 
 @app.route('/signup')
 def signup():
