@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='welcome.css')}}">
+    <title>NewsAholic</title>
+  </head>
+  <body class="mainbody container-fluid">
+    
+    <div class="row">
+       <div class="col-2 d-flex justify-content-between" id="left-nav">
+          <div id="logo">
+              <center>
+              <a class="navbar-brand" href="#">
+                <img src="{{url_for('static',filename='Logo.png')}}" id="logo" height="40" alt="Logo">
+              </a>
+              </center>
+          </div>    
+          <div id="centercontent">
+            <script>
+              function changetowelcome(){
+                window.location.replace('/')
+              }
+              function changetoexplore(){
+                window.location.replace('/explore')
+              }
+            </script>
+            <div id="individualtopics" onclick="changetowelcome()">
+              Home
+            </div>
+            <div id="individualtopics" class="selectedtopic" onclick="changetoexplore()">
+                Explore
+            </div>
+            <div id="individualtopics">
+                Messages
+            </div>
+          </div> 
+          <div id="endcontent">
+            <div>Logout</div> 
+          </div>
+       </div>
+       <div class="col-10" id="right-side">
+          
+          <div class="navbar" id="welcomenav">
+            <div id="Icon">J</div>
+          </div>
+ 
+          <div id="todaysheadlines">
+            <h5>Business News</h5>
+          </div>
+
+          <div id="todaysheadlinesitems" class="row" style="margin-top:24px;margin-bottom: 24px;">
+            <script>    
+              fetchres = fetch('/bheadlines',{
+                        method:'GET',
+                        contentType: "application/json"});
+                        fetchres.then(res => {return res.json()}).then(
+                          d=>{
+                            Object.entries(d).forEach(([key, value]) =>{
+                              try{
+                                console.log(typeof(value))
+                                const regex = /('(?=(,\s*')))|('(?=:))|((?<=([:,]\s*))')|((?<={)')|('(?=}))/g
+                                a = value.replace(regex, '"')
+                                console.log(JSON.parse(a).source)
+                                
+                                var node = `
+                                <div class="col-4 p-1">                                
+                                      <div class="card" id="newsitem">
+                                        <div class="card-body">
+                                              <div class="vertical">
+                                                <div class="newsrow">
+                                                  <span class="newsimage">
+                                                    <img src=" ${JSON.parse(a).urlToImage}" id="headlineimg" height="12" width="90"/>
+                                                  </span>
+                                                  <span class="headlines">
+                                                    <span class="headlinestext">
+                                                      ${JSON.parse(a).title}
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                         </div>      
+                                      </div>
+                                  </div>`
+                                    document.getElementById("todaysheadlinesitems").innerHTML += node
+                                    // let nodeelement = document.createElement(div)
+                                    // nodeelement.append(node)
+                                }catch(e){}      
+                            })
+                          }
+                        )
+   
+            </script>
+            <!-- <div class="col-4 p-1">
+              <div class="card" id="newsitem">
+                <div class="card-body">
+                      <div class="vertical">
+                        <div class="newsrow">
+                          <span class="newsimage">
+                            <img src="{{url_for('static',filename='Icons/test.jfif')}}" id="headlineimg"/>
+                          </span>
+                          <span class="headlines">
+                            <span class="headlinestext">
+                              Unusual Aerora Borealis sightings in the North.
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div id="todaysheadlines">
+            <h5>Sports News</h5>
+          </div>
+
+          <div id="todaysheadlinesitemssports" class="row" style="margin-top:24px;margin-bottom: 24px;">
+            <script>    
+              fetchres = fetch('/sheadlines',{
+                        method:'GET',
+                        contentType: "application/json"});
+                        fetchres.then(res => {return res.json()}).then(
+                          d=>{
+                            Object.entries(d).forEach(([key, value]) =>{
+                              try{
+                                console.log(typeof(value))
+                                const regex = /('(?=(,\s*')))|('(?=:))|((?<=([:,]\s*))')|((?<={)')|('(?=}))/g
+                                a = value.replace(regex, '"')
+                                console.log(JSON.parse(a).source)
+                                
+                                var node = `
+                                <div class="col-4 p-1">                                
+                                      <div class="card" id="newsitem">
+                                        <div class="card-body">
+                                              <div class="vertical">
+                                                <div class="newsrow">
+                                                  <span class="newsimage">
+                                                    <img src=" ${JSON.parse(a).urlToImage}" id="headlineimg" height="12" width="90"/>
+                                                  </span>
+                                                  <span class="headlines">
+                                                    <span class="headlinestext">
+                                                      ${JSON.parse(a).title}
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                         </div>      
+                                      </div>
+                                  </div>`
+                                    document.getElementById("todaysheadlinesitemssports").innerHTML += node
+                                    // let nodeelement = document.createElement(div)
+                                    // nodeelement.append(node)
+                                }catch(e){}      
+                            })
+                          }
+                        )
+   
+            </script>
+            <!-- <div class="col-4 p-1">
+              <div class="card" id="newsitem">
+                <div class="card-body">
+                      <div class="vertical">
+                        <div class="newsrow">
+                          <span class="newsimage">
+                            <img src="{{url_for('static',filename='Icons/test.jfif')}}" id="headlineimg"/>
+                          </span>
+                          <span class="headlines">
+                            <span class="headlinestext">
+                              Unusual Aerora Borealis sightings in the North.
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div id="todaysheadlines">
+            <h5>Entertainment News</h5>
+          </div>
+
+          <div id="todaysheadlinesitemsentertainment" class="row" style="margin-top:24px;margin-bottom: 24px;">
+            <script>    
+              fetchres = fetch('/eheadlines',{
+                        method:'GET',
+                        contentType: "application/json"});
+                        fetchres.then(res => {return res.json()}).then(
+                          d=>{
+                            Object.entries(d).forEach(([key, value]) =>{
+                              try{
+                                console.log(typeof(value))
+                                const regex = /('(?=(,\s*')))|('(?=:))|((?<=([:,]\s*))')|((?<={)')|('(?=}))/g
+                                a = value.replace(regex, '"')
+                                console.log(JSON.parse(a).source)
+                                
+                                var node = `
+                                <div class="col-4 p-1">                                
+                                      <div class="card" id="newsitem">
+                                        <div class="card-body">
+                                              <div class="vertical">
+                                                <div class="newsrow">
+                                                  <span class="newsimage">
+                                                    <img src=" ${JSON.parse(a).urlToImage}" id="headlineimg" height="12" width="90"/>
+                                                  </span>
+                                                  <span class="headlines">
+                                                    <span class="headlinestext">
+                                                      ${JSON.parse(a).title}
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                         </div>      
+                                      </div>
+                                  </div>`
+                                    document.getElementById("todaysheadlinesitemsentertainment").innerHTML += node
+                                    // let nodeelement = document.createElement(div)
+                                    // nodeelement.append(node)
+                                }catch(e){}      
+                            })
+                          }
+                        )
+   
+            </script>
+            <!-- <div class="col-4 p-1">
+              <div class="card" id="newsitem">
+                <div class="card-body">
+                      <div class="vertical">
+                        <div class="newsrow">
+                          <span class="newsimage">
+                            <img src="{{url_for('static',filename='Icons/test.jfif')}}" id="headlineimg"/>
+                          </span>
+                          <span class="headlines">
+                            <span class="headlinestext">
+                              Unusual Aerora Borealis sightings in the North.
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div id="todaysheadlines">
+            <h5>Technology News</h5>
+          </div>
+
+          <div id="todaysheadlinesitemstech" class="row" style="margin-top:24px;margin-bottom: 24px;">
+            <script>    
+              fetchres = fetch('/theadlines',{
+                        method:'GET',
+                        contentType: "application/json"});
+                        fetchres.then(res => {return res.json()}).then(
+                          d=>{
+                            Object.entries(d).forEach(([key, value]) =>{
+                              try{
+                                console.log(typeof(value))
+                                const regex = /('(?=(,\s*')))|('(?=:))|((?<=([:,]\s*))')|((?<={)')|('(?=}))/g
+                                a = value.replace(regex, '"')
+                                console.log(JSON.parse(a).source)
+                                
+                                var node = `
+                                <div class="col-4 p-1">                                
+                                      <div class="card" id="newsitem">
+                                        <div class="card-body">
+                                              <div class="vertical">
+                                                <div class="newsrow">
+                                                  <span class="newsimage">
+                                                    <img src=" ${JSON.parse(a).urlToImage}" id="headlineimg" height="12" width="90"/>
+                                                  </span>
+                                                  <span class="headlines">
+                                                    <span class="headlinestext">
+                                                      ${JSON.parse(a).title}
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                         </div>      
+                                      </div>
+                                  </div>`
+                                    document.getElementById("todaysheadlinesitemstech").innerHTML += node
+                                    // let nodeelement = document.createElement(div)
+                                    // nodeelement.append(node)
+                                }catch(e){}      
+                            })
+                          }
+                        )
+   
+            </script>
+            <!-- <div class="col-4 p-1">
+              <div class="card" id="newsitem">
+                <div class="card-body">
+                      <div class="vertical">
+                        <div class="newsrow">
+                          <span class="newsimage">
+                            <img src="{{url_for('static',filename='Icons/test.jfif')}}" id="headlineimg"/>
+                          </span>
+                          <span class="headlines">
+                            <span class="headlinestext">
+                              Unusual Aerora Borealis sightings in the North.
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div id="todaysheadlines">
+            <h5>Health and Fitness News</h5>
+          </div>
+
+          <div id="todaysheadlinesitemshealth" class="row" style="margin-top:24px;margin-bottom: 24px;">
+            <script>    
+              fetchres = fetch('/heheadlines',{
+                        method:'GET',
+                        contentType: "application/json"});
+                        fetchres.then(res => {return res.json()}).then(
+                          d=>{
+                            Object.entries(d).forEach(([key, value]) =>{
+                              try{
+                                console.log(typeof(value))
+                                const regex = /('(?=(,\s*')))|('(?=:))|((?<=([:,]\s*))')|((?<={)')|('(?=}))/g
+                                a = value.replace(regex, '"')
+                                console.log(JSON.parse(a).source)
+                                
+                                var node = `
+                                <div class="col-4 p-1">                                
+                                      <div class="card" id="newsitem">
+                                        <div class="card-body">
+                                              <div class="vertical">
+                                                <div class="newsrow">
+                                                  <span class="newsimage">
+                                                    <img src=" ${JSON.parse(a).urlToImage}" id="headlineimg" height="12" width="90"/>
+                                                  </span>
+                                                  <span class="headlines">
+                                                    <span class="headlinestext">
+                                                      ${JSON.parse(a).title}
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                                                    </span>
+                                                    <span class="newsrow">
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                                                      <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                                                    </span>
+                                                  </span>
+                                                </div>
+                                              </div>
+                                         </div>      
+                                      </div>
+                                  </div>`
+                                    document.getElementById("todaysheadlinesitemshealth").innerHTML += node
+                                    // let nodeelement = document.createElement(div)
+                                    // nodeelement.append(node)
+                                }catch(e){}      
+                            })
+                          }
+                        )
+   
+            </script>
+            <!-- <div class="col-4 p-1">
+              <div class="card" id="newsitem">
+                <div class="card-body">
+                      <div class="vertical">
+                        <div class="newsrow">
+                          <span class="newsimage">
+                            <img src="{{url_for('static',filename='Icons/test.jfif')}}" id="headlineimg"/>
+                          </span>
+                          <span class="headlines">
+                            <span class="headlinestext">
+                              Unusual Aerora Borealis sightings in the North.
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Up.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;10.2K</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Thumbs Down.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;300</span></span>
+                            </span>
+                            <span class="newsrow">
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Clock.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;09:00 AM</span></span>
+                              <span style="min-width:50%"><img src="{{url_for('static',filename='Icons/Bookmark.png')}}" height="12"/><span style="color:grey;font-size:x-small;font-weight: 600;">&nbsp;&nbsp;Save</span></span>
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+       </div>
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
