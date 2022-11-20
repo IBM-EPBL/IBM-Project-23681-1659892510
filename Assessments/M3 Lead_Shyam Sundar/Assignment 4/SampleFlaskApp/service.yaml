@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: newsaholic
+  namespace: default
+spec:
+  selector:
+    app: newsaholic
+  ports:
+  - port: 5000
+  type: NodePort 
