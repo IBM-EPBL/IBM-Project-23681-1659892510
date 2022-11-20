@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="{{url_for('static',filename='indexcss.css')}}">
+    <!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://accounts.google.com/gsi/client" async defer></script> -->
+
+    <title>NewsAholic</title>
+  </head>
+  <body class="mainbody container-lg" id="mainbody">
+    <nav class="navbar navbar-light ">
+        <a class="navbar-brand" href="#">
+          <img src="{{url_for('static',filename='Logo.png')}}" height="34" alt="Logo">
+        </a>
+        <form class="form-inline">
+            <img src="{{url_for('static',filename='Location.png')}}" height="20" alt="Logo">
+            &nbsp;&nbsp;&nbsp;
+            <div class="fw-500" id="location">Chennai, India</div>
+            <!-- <input class="form-control mr-sm-2" type="dropdown" placeholder="Search" aria-label="Search"> -->
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+        </form>
+    </nav>
+
+    <div class="d-flex justify-content-center" id="formcontent">
+        <div class="card text-center" style="width: 22rem;">
+            <div class="card-body" style="border-radius: 30px">
+              <h5 class="card-title" style="font-size:xx-large;font-weight: bold;">Login</h5>
+              <h6 class="card-subtitle mb-2 text-muted" style="font-size:x-small">Please enter your crendentials</h6>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              
+                <div class="form-group my-4">
+                  <input type="email" name="name" class="form-control mt-3" id="exampleFormControlInput" placeholder="Email ID">
+                  <input type="password" name="password" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-warning btn-lg btn-block py-2" id="buttonstyle" onclick="signinusers()">Sign In</button>
+                <script>
+                  function signinusers(){
+                    var uname = document.getElementById('exampleFormControlInput').value;
+                    var upass = document.getElementById('exampleFormControlInput1').value;
+                    fetchres = fetch('/signinusers',{
+                      method:'POST',
+                      body:JSON.stringify({id: uname, password: upass}),
+                      contentType: "application/json"});
+                    fetchres.then(res => {return res.json()})
+                            .then(
+                              d=>{
+                                console.log(d)
+                                if(d.result == "Found"){localStorage.setItem("key",d.key);localStorage.setItem("name",d.name);localStorage.setItem("id",d.userid);window.location.replace('/');}
+                                else if (d.result == "Not Found"){
+                                     document.getElementById("mainbody").innerHTML += 
+                                     `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <strong>Username or Password is Incorrect!</strong> 
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                      </div>`
+                                }
+                              })  
+                  }
+                </script>
+                <div style="font-size:x-small; font-weight: bold;" class="my-3">Or Don't have an account?</div>    
+              
+              <a href="/signup" style= "text-decoration: none;">
+                <button type="submit" class="btn btn-warning btn-lg btn-block py-2 mb-2" id="buttonstyle">Sign Up</button>
+              </a>
+              <div style="font-size:x-small; font-weight: bold;" class="my-3">Or Sign using other services</div>
+              
+            </div>
+        </div>
+    </div>
+
+    {{warning|safe}}
+
+    <div id="rockectimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/Group 6.png')}}" height="250"/>
+    </div>
+
+    <div id="newsreportimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/news REPORT.png')}}" height="75"/>
+    </div>
+
+    <div id="chartimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/Combo Chart.png')}}" height="75"/>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
