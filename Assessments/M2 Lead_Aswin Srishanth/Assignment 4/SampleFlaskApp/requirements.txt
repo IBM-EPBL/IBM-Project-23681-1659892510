@@ -1,0 +1,9 @@
+bcrypt
+bson
+cryptography
+Flask
+ibm-db
+newsapi-python
+pip
+python-bsonjs
+python-dateutil
