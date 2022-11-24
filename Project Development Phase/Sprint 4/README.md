@@ -22,7 +22,7 @@ XSS:
 ![WhatsApp Image 2022-11-23 at 21 39 27 (3)](https://user-images.githubusercontent.com/95156717/203595068-1b82fa97-a4bd-4c40-9b5e-6ccd7a38d267.jpeg)
 ![WhatsApp Image 2022-11-23 at 21 39 27 (4)](https://user-images.githubusercontent.com/95156717/203595169-85a963e1-9b95-4926-b3ab-027cc08f3183.jpeg)
 
-CSRA:
+CSRf:
 ![WhatsApp Image 2022-11-23 at 21 40 12](https://user-images.githubusercontent.com/95156717/203595340-da6a3977-f08c-4d3d-a113-551cf33c18b4.jpeg)
 ![WhatsApp Image 2022-11-23 at 21 40 12 (1)](https://user-images.githubusercontent.com/95156717/203595457-954c908e-61c7-4d38-b3e8-afe8468c94c0.jpeg)
 ![WhatsApp Image 2022-11-23 at 21 40 12 (2)](https://user-images.githubusercontent.com/95156717/203595680-d3b648f0-3b42-413e-8f16-e3eec585fe66.jpeg)
