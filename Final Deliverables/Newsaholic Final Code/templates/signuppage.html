@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='indexcss.css')}}">
+    <title>NewsAholic</title>
+  </head>
+  <body class="mainbody container-lg" id="mainbody">
+    
+    <nav class="navbar navbar-light ">
+        <a class="navbar-brand" href="#">
+          <img src="{{url_for('static',filename='Logo.png')}}" height="34" alt="Logo">
+        </a>
+        <form class="form-inline">
+            <img src="{{url_for('static',filename='Location.png')}}" height="20" alt="Logo">
+            &nbsp;&nbsp;&nbsp;
+            <!-- <div class="fw-500" id="location">Chennai, India</div> -->
+            <!-- <input class="form-control mr-sm-2" type="dropdown" placeholder="Search" aria-label="Search"> -->
+            <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
+        </form>
+    </nav>
+
+    <script>
+      function checkfields(){
+        var email = document.getElementById('exampleFormControlInput2').value;
+        var password = document.getElementById('exampleFormControlInput3').value;
+        var cnfpassword = document.getElementById('exampleFormControlInput4').value;
+        const mailre = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        if(!mailre.test(email)){
+              document.getElementById("mainbody").innerHTML += 
+              `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>Email Format Error!</strong> 
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+               </div>`
+        }   
+        if(!(password == cnfpassword)){
+          document.getElementById("showpassmismatch").innerHTML = "Passwords donot match!"
+        }    
+        const passre = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        if(!passre.test(password)){
+          document.getElementById("mainbody").innerHTML += 
+              `<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>Weak Passord!Use Passowrd of min 8 chars, atleast 1 letter and 1 number</strong> 
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+               </div>`
+        }
+        signupusers()
+      }
+    </script>
+
+    <div class="d-flex justify-content-center align-items-center" id="formcontent1">
+        <div class="card text-center" style="width: 22rem;">
+            <div class="card-body" style="border-radius: 30px">
+              <h5 class="card-title" style="font-size:xx-large;font-weight: bold;">Register</h5>
+              <h6 class="card-subtitle mb-2 text-muted" style="font-size:x-small">Please enter your details</h6>
+              <!-- <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> -->
+              
+                <div class="form-group my-4">
+                    <input type="text" name="name" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Display Name">
+                    <input type="email" name="roll" class="form-control mt-3" id="exampleFormControlInput2" placeholder="Email ID">
+                    <input type="password" name="email" class="form-control mt-3" id="exampleFormControlInput3" placeholder="Password">
+                    <input type="password" name="password" class="form-control mt-3" id="exampleFormControlInput4" placeholder="Confirm Password">
+                    <div id="showpassmismatch" style="font-size:x-small;color:red"></div>
+                </div>
+                
+                <button type="submit" class="btn btn-warning btn-lg btn-block py-2" id="buttonstyle" onclick="checkfields()">Sign Up</button>
+                <div style="font-size:x-small; font-weight: bold;" class="my-3">Or Already have an account?</div>
+              
+              <a href = "/signin" style="text-decoration: none;">
+                <button type="button" class="btn btn-warning btn-lg btn-block py-2 mb-2" id="buttonstyle">Sign In</button>
+              </a>
+              <script>
+                function signupusers(){
+                    var uname = document.getElementById('exampleFormControlInput1').value;
+                    var uemail = document.getElementById('exampleFormControlInput2').value;
+                    var upass = document.getElementById('exampleFormControlInput3').value;
+                    fetch('/signupusers',{
+                      method:'POST',
+                      body:JSON.stringify({name: uname,email:uemail,password: upass}),
+                      contentType: "application/json"}).then(response => {
+                        console.log(response.status);
+                        if(response.status == 200){
+                             console.log("Entered Switching if")
+                             window.location.replace('/signin')
+                        }     
+                      })
+                }
+              </script>
+            </div>
+        </div>
+    </div>
+
+    <div id="rockectimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/Group 6.png')}}" height="250"/>
+    </div>
+
+    <div id="newsreportimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/news REPORT.png')}}" height="75"/>
+    </div>
+
+    <div id="chartimage" class="img-fluid">
+        <img src="{{url_for('static',filename='NewsaholicImgAssets/Combo Chart.png')}}" height="75"/>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
